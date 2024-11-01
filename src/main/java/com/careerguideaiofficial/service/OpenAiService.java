@@ -17,6 +17,8 @@ public class OpenAiService {
     @Autowired
     private RestTemplate restTemplate;
 
+
+    // The API URL is injected from the application.properties file using the @Value annotation
     @Value("${openai.api.url}")
     private String apiUrl;
 
