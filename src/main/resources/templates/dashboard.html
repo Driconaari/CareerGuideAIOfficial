@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>AI Career Coach Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:src="@{/js/career-coach.js}"></script>
 </head>
 <body>
+<h1>Welcome to Your AI Career Coach</h1>
 
+<section id="resume-review">
+    <h2>Resume Review</h2>
+    <form th:action="@{/review-resume}" method="post">
+        <textarea name="resume" rows="10" cols="50"></textarea>
+        <button type="submit">Get Feedback</button>
+    </form>
+    <div th:if="${feedback}" th:text="${feedback}"></div>
+</section>
+
+<section id="interview-practice">
+    <h2>Interview Practice</h2>
+    <form th:action="@{/interview-practice}" method="post">
+        <input type="text" name="question" placeholder="Enter an interview question">
+        <button type="submit">Get Response</button>
+    </form>
+    <div th:if="${response}" th:text="${response}"></div>
+</section>
+
+<section id="skill-recommendation">
+    <h2>Skill Recommendations</h2>
+    <canvas id="skillChart"></canvas>
+</section>
+
+<section id="progress-tracking">
+    <h2>Career Progress</h2>
+    <canvas id="progressChart"></canvas>
+</section>
 </body>
 </html>
