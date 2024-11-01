@@ -5,21 +5,20 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "interview_practices")
+public class InterviewPractice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String passwordHash;
-    private String personalityType;
-    private String careerGoals;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private String question;
+    private String answer;
+    private String feedback;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     // Getters and setters
 }
-
-
