@@ -76,3 +76,48 @@ footer {
     background-color: #333;
     color: white;
 }
+
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-container input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.auth-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: #f44336;
+    margin-bottom: 1rem;
+}
+
+.info {
+    color: #2196F3;
+    margin-bottom: 1rem;
+}

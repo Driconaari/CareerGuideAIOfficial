@@ -26,9 +26,18 @@
         <h2>Resume Review</h2>
         <form th:action="@{/review-resume}" method="post">
             <textarea name="resume" rows="10" cols="50" placeholder="Paste your resume here..."></textarea>
-            <button type="submit">Get Feedback</button>
+            <button type="submit">Get  Feedback</button>
         </form>
         <div th:if="${feedback}" class="feedback" th:text="${feedback}"></div>
+        <div th:if="${resumes}">
+            <h3>Previous Resume Reviews</h3>
+            <ul>
+                <li th:each="resume : ${resumes}">
+                    <p th:text="${#temporals.format(resume.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                    <p th:text="${resume.feedback}"></p>
+                </li>
+            </ul>
+        </div>
     </section>
 
     <section id="interview-practice">
@@ -38,6 +47,16 @@
             <button type="submit">Get Response</button>
         </form>
         <div th:if="${response}" class="response" th:text="${response}"></div>
+        <div th:if="${interviewPractices}">
+            <h3>Previous Interview Practices</h3>
+            <ul>
+                <li th:each="practice : ${interviewPractices}">
+                    <p th:text="${#temporals.format(practice.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                    <p>Q: <span th:text="${practice.question}"></span></p>
+                    <p>A: <span th:text="${practice.answer}"></span></p>
+                </li>
+            </ul>
+        </div>
     </section>
 
     <section id="skill-recommendation">
