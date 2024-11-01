@@ -65,10 +65,6 @@ DB_DATABASE="careerguide"
 Running the Application
 To start the server, run:
 
-bash
-Copy code
-npm run dev
-Visit http://localhost:3000 in your browser to see the application in action.
 
 Contact
 For further questions, issues, or support, feel free to reach out to asgervb@gmail.com.
