@@ -4,36 +4,69 @@
     <title>AI Career Coach Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script th:src="@{/js/career-coach.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<h1>Welcome to Your AI Career Coach</h1>
+<header>
+    <h1>Welcome to Your AI Career Coach, <span th:text="${user.username}">User</span>!</h1>
+</header>
 
-<section id="resume-review">
-    <h2>Resume Review</h2>
-    <form th:action="@{/review-resume}" method="post">
-        <textarea name="resume" rows="10" cols="50"></textarea>
-        <button type="submit">Get Feedback</button>
-    </form>
-    <div th:if="${feedback}" th:text="${feedback}"></div>
-</section>
+<nav>
+    <ul>
+        <li><a href="#resume-review">Resume Review</a></li>
+        <li><a href="#interview-practice">Interview Practice</a></li>
+        <li><a href="#skill-recommendation">Skill Recommendations</a></li>
+        <li><a href="#personality-guidance">Personality Guidance</a></li>
+        <li><a href="#progress-tracking">Progress Tracking</a></li>
+    </ul>
+</nav>
 
-<section id="interview-practice">
-    <h2>Interview Practice</h2>
-    <form th:action="@{/interview-practice}" method="post">
-        <input type="text" name="question" placeholder="Enter an interview question">
-        <button type="submit">Get Response</button>
-    </form>
-    <div th:if="${response}" th:text="${response}"></div>
-</section>
+<main>
+    <section id="resume-review">
+        <h2>Resume Review</h2>
+        <form th:action="@{/review-resume}" method="post">
+            <textarea name="resume" rows="10" cols="50" placeholder="Paste your resume here..."></textarea>
+            <button type="submit">Get Feedback</button>
+        </form>
+        <div th:if="${feedback}" class="feedback" th:text="${feedback}"></div>
+    </section>
 
-<section id="skill-recommendation">
-    <h2>Skill Recommendations</h2>
-    <canvas id="skillChart"></canvas>
-</section>
+    <section id="interview-practice">
+        <h2>Interview Practice</h2>
+        <form th:action="@{/interview-practice}" method="post">
+            <input type="text" name="question" placeholder="Enter an interview question">
+            <button type="submit">Get Response</button>
+        </form>
+        <div th:if="${response}" class="response" th:text="${response}"></div>
+    </section>
 
-<section id="progress-tracking">
-    <h2>Career Progress</h2>
-    <canvas id="progressChart"></canvas>
-</section>
+    <section id="skill-recommendation">
+        <h2>Skill Recommendations</h2>
+        <form th:action="@{/skill-recommendations}" method="post">
+            <textarea name="careerGoals" rows="5" cols="50" placeholder="Describe your career goals..."></textarea>
+            <button type="submit">Get Recommendations</button>
+        </form>
+        <div th:if="${recommendations}" class="recommendations" th:text="${recommendations}"></div>
+        <canvas id="skillChart"></canvas>
+    </section>
+
+    <section id="personality-guidance">
+        <h2>Personality Type Guidance</h2>
+        <form th:action="@{/personality-guidance}" method="post">
+            <input type="text" name="personalityType" placeholder="Enter your personality type (e.g., INTJ)">
+            <button type="submit">Get Guidance</button>
+        </form>
+        <div th:if="${guidance}" class="guidance" th:text="${guidance}"></div>
+    </section>
+
+    <section id="progress-tracking">
+        <h2>Career Progress</h2>
+        <canvas id="progressChart"></canvas>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2023 AI Career Coach. All rights reserved.</p>
+</footer>
 </body>
 </html>

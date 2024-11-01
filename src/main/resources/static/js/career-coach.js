@@ -58,4 +58,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Form submission handling
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector(this.closest('section').id);
+                    if (newContent) {
+                        this.closest('section').innerHTML = newContent.innerHTML;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
 });
