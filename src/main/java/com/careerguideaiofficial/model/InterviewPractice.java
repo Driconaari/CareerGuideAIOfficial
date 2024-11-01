@@ -1,9 +1,16 @@
 package com.careerguideaiofficial.model;
 
-import jakarta.persistence.*;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "interview_practices")
 public class InterviewPractice {
@@ -19,6 +26,4 @@ public class InterviewPractice {
     private String answer;
     private String feedback;
     private LocalDateTime createdAt;
-
-    // Getters and setters
 }

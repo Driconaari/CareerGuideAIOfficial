@@ -1,31 +1,45 @@
 package com.careerguideaiofficial.service;
 
-
+import com.careerguideaiofficial.model.InterviewPractice;
 import com.careerguideaiofficial.model.Resume;
+import com.careerguideaiofficial.model.SkillProgress;
 import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.repository.InterviewPracticeRepository;
 import com.careerguideaiofficial.repository.ResumeRepository;
 import com.careerguideaiofficial.repository.SkillProgressRepository;
+import com.careerguideaiofficial.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 public class CareerCoachService {
 
-    @Autowired
-    private OpenAiService openAiService;
+    private final OpenAiService openAiService;
+    private final ResumeRepository resumeRepository;
+    private final InterviewPracticeRepository interviewPracticeRepository;
+    private final SkillProgressRepository skillProgressRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private ResumeRepository resumeRepository;
+    public CareerCoachService(OpenAiService openAiService,
+                              ResumeRepository resumeRepository,
+                              InterviewPracticeRepository interviewPracticeRepository,
+                              SkillProgressRepository skillProgressRepository,
+                              UserRepository userRepository) {
+        this.openAiService = openAiService;
+        this.resumeRepository = resumeRepository;
+        this.interviewPracticeRepository = interviewPracticeRepository;
+        this.skillProgressRepository = skillProgressRepository;
+        this.userRepository = userRepository;
+    }
 
-    @Autowired
-    private InterviewPracticeRepository interviewPracticeRepository;
-
-    @Autowired
-    private SkillProgressRepository skillProgressRepository;
-
+    @Transactional
     public String getResumeReview(User user, String resumeContent) {
         String prompt = "Please review the following resume and provide constructive feedback for improvement:\n\n" + resumeContent;
         String feedback = openAiService.getAiResponse(prompt);
@@ -41,6 +55,7 @@ public class CareerCoachService {
         return feedback;
     }
 
+    @Transactional
     public String getInterviewResponse(User user, String question) {
         String prompt = "As an AI career coach, please provide a sample answer to the following interview question:\n\n" + question;
         String answer = openAiService.getAiResponse(prompt);
@@ -55,20 +70,21 @@ public class CareerCoachService {
         return answer;
     }
 
+    @Transactional
     public String getSkillRecommendations(User user, String careerGoals) {
         String prompt = "Based on the following career goals, please recommend skills to develop:\n\n" + careerGoals;
         String recommendations = openAiService.getAiResponse(prompt);
 
-        // Extract skills from recommendations and update user's skill progress
-        // This is a simplified version, you might want to use NLP for better extraction
-        String[] skills = recommendations.split(",");
+        List<String> skills = Arrays.stream(recommendations.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
+
         for (String skill : skills) {
-            skill = skill.trim();
             SkillProgress progress = skillProgressRepository.findByUserIdAndSkillName(user.getId(), skill)
                     .orElse(new SkillProgress());
             progress.setUser(user);
             progress.setSkillName(skill);
-            progress.setProficiencyLevel(1); // Start at beginner level
+            progress.setProficiencyLevel(progress.getProficiencyLevel() == null ? 1 : progress.getProficiencyLevel());
             progress.setUpdatedAt(LocalDateTime.now());
             skillProgressRepository.save(progress);
         }
@@ -76,13 +92,13 @@ public class CareerCoachService {
         return recommendations;
     }
 
+    @Transactional
     public String getPersonalityTypeGuidance(User user, String personalityType) {
         String prompt = "Provide career guidance for someone with the following personality type:\n\n" + personalityType;
         String guidance = openAiService.getAiResponse(prompt);
 
         user.setPersonalityType(personalityType);
-        // Assuming you have a userRepository
-        // userRepository.save(user);
+        userRepository.save(user);
 
         return guidance;
     }

@@ -1,9 +1,16 @@
 package com.careerguideaiofficial.model;
 
-import jakarta.persistence.*;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "resumes")
 public class Resume {
