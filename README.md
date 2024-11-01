@@ -24,7 +24,7 @@ Clone the repository to your local machine:
 
 bash
 Copy code
-git clone https://github.com/yourusername/ai-career-coach.git
+git clone [https://github.com/yourusername/ai-career-coach](https://github.com/Driconaari/CareerGuideAIOfficial.git)
 cd ai-career-coach
 2. Install Dependencies
 Run the following command to install all required dependencies:
