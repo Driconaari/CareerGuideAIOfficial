@@ -1,8 +1,5 @@
 package com.careerguideaiofficial.controller;
 
-
-package com.careerguideaiofficial.controller;
-
 import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +15,21 @@ public class DashboardController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    @GetMapping("/user-dashboard")
+    public String userDashboard(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        User user = userService.findByUsername(username);
+        if (auth != null && auth.isAuthenticated()) {
+            String username = auth.getName();
+            User user = userService.findByUsername(username);
 
-        if (user == null) {
-            // Handle the case where user is not found
-            return "redirect:/login";
+            if (user != null) {
+                model.addAttribute("user", user);
+                return "user-dashboard";
+            }
         }
 
-        model.addAttribute("user", user);
-        return "dashboard";
+
+        // If user is not authenticated or not found, redirect to login
+        return "redirect:/login";
     }
 }

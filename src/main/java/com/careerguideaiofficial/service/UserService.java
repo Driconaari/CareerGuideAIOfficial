@@ -45,4 +45,8 @@ public class UserService implements UserDetailsService {
         user.setPasswordHash(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

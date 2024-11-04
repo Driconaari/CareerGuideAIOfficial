@@ -5,6 +5,8 @@ import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.service.CareerCoachService;
 import com.careerguideaiofficial.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +24,22 @@ public class CareerCoachController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        User currentUser = userService.getCurrentUser();
-        model.addAttribute("user", currentUser);
-        model.addAttribute("skillProgress", careerCoachService.getUserSkillProgress(currentUser));
-        model.addAttribute("resumes", careerCoachService.getUserResumes(currentUser));
-        model.addAttribute("interviewPractices", careerCoachService.getUserInterviewPractices(currentUser));
-        return "dashboard";
-    }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            String username = auth.getName();
+            User user = userService.findByUsername(username);
 
+            if (user != null) {
+                model.addAttribute("user", user);
+                model.addAttribute("skillProgress", careerCoachService.getUserSkillProgress(user));
+                model.addAttribute("resumes", careerCoachService.getUserResumes(user));
+                model.addAttribute("interviewPractices", careerCoachService.getUserInterviewPractices(user));
+                return "dashboard";
+            }
+        }
+
+        return "redirect:/login";
+    }
     @PostMapping("/review-resume")
     public String reviewResume(@RequestParam String resume, Model model) {
         User currentUser = userService.getCurrentUser();
