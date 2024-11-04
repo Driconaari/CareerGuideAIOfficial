@@ -3,6 +3,7 @@ package com.careerguideaiofficial.controller;
 import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,25 @@ public class DashboardController {
 
 
         // If user is not authenticated or not found, redirect to login
+        return "redirect:/login";
+    }
+
+
+
+    @GetMapping("/user-profile")
+    public String userProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String username = auth.getName();
+            User user = userService.findByUsername(username);
+
+            if (user != null) {
+                model.addAttribute("user", user);
+                // Add more user-specific attributes here
+                return "user-profile";
+            }
+        }
+
         return "redirect:/login";
     }
 }

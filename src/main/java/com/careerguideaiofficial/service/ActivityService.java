@@ -17,3 +17,4 @@ public class ActivityService {
     public List<Activity> getRecentActivitiesForUser(User user) {
         return activityRepository.findTop10ByUserOrderByTimestampDesc(user);
     }
+}
