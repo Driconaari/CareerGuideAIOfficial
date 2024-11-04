@@ -1,7 +1,9 @@
 package com.careerguideaiofficial.controller;
 
+import com.careerguideaiofficial.model.Activity;
 import com.careerguideaiofficial.model.SkillProgress;
 import com.careerguideaiofficial.model.User;
+import com.careerguideaiofficial.service.ActivityService;
 import com.careerguideaiofficial.service.CareerCoachService;
 import com.careerguideaiofficial.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class CareerCoachController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ActivityService activityService;
 
     @GetMapping("/user-dashboard")
     public String userDashboard(Model model) {
