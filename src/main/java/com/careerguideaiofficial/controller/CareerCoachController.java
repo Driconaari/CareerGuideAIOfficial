@@ -41,6 +41,7 @@ public class CareerCoachController {
         return "redirect:/login";
     }
 
+    /*
     @PostMapping("/review-resume")
     public String reviewResume(@RequestParam String resume, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,6 +52,17 @@ public class CareerCoachController {
             return "dashboard";
         }
         return "redirect:/login";
+    }
+
+     */
+
+    @PostMapping("/review-resume")
+    public String reviewResume(@RequestParam String resume, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        String feedback = careerCoachService.getResumeReview(user, resume);
+        model.addAttribute("feedback", feedback);
+        return "dashboard";
     }
 
     @PostMapping("/interview-practice")

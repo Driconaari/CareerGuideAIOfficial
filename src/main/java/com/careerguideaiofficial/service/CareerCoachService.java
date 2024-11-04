@@ -50,7 +50,14 @@ public class CareerCoachService {
         resume.setFeedback(feedback);
         resume.setCreatedAt(LocalDateTime.now());
         resume.setUpdatedAt(LocalDateTime.now());
-        resumeRepository.save(resume);
+
+        try {
+            resumeRepository.save(resume);
+        } catch (Exception e) {
+            // Log the error and return a user-friendly message
+            e.printStackTrace();
+            return "An error occurred while saving the resume feedback. Please try again later.";
+        }
 
         return feedback;
     }

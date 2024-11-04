@@ -25,7 +25,10 @@ public class Resume {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "TEXT")
     private String feedback;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
 }
