@@ -25,4 +25,7 @@ public class User {
     private String careerGoals;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime lastLoginDate;
+    private int totalLogins;
+
 }

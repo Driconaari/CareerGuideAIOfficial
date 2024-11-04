@@ -5,6 +5,7 @@ import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.service.CareerCoachService;
 import com.careerguideaiofficial.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,22 +23,29 @@ public class CareerCoachController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    @GetMapping("/user-dashboard")
+    public String userDashboard(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated()) {
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
             String username = auth.getName();
             User user = userService.findByUsername(username);
 
             if (user != null) {
                 model.addAttribute("user", user);
-                model.addAttribute("skillProgress", careerCoachService.getUserSkillProgress(user));
-                model.addAttribute("resumes", careerCoachService.getUserResumes(user));
-                model.addAttribute("interviewPractices", careerCoachService.getUserInterviewPractices(user));
-                return "dashboard";
+                // Add more attributes to the model as needed
+                model.addAttribute("lastLoginDate", user.getLastLoginDate());
+                model.addAttribute("totalLogins", user.getTotalLogins());
+
+                // You might want to add more user-specific data here
+                // For example, recent activities or notifications
+                List<Activity> recentActivities = activityService.getRecentActivitiesForUser(user);
+                model.addAttribute("recentActivities", recentActivities);
+
+                return "user-dashboard";
             }
         }
 
+        // If the user is not authenticated or not found, redirect to login
         return "redirect:/login";
     }
     @PostMapping("/review-resume")
