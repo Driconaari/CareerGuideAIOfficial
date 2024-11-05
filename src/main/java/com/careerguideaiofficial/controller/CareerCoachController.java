@@ -76,7 +76,8 @@ public class CareerCoachController {
 
     @PostMapping("/skill-recommendations")
     public String skillRecommendations(@RequestParam String careerGoals, Model model, RedirectAttributes redirectAttributes) {
-        User user = getAuthenticatedUser();
+        User user = getAuthenticatedUser(); // This should return the logged-in user
+
         if (user == null) {
             return "redirect:/login";
         }
@@ -84,12 +85,15 @@ public class CareerCoachController {
         try {
             String recommendations = careerCoachService.getSkillRecommendations(user, careerGoals);
             model.addAttribute("recommendations", recommendations);
-            return "dashboard";
+            model.addAttribute("user", user); // Add user to the model
+            return "dashboard"; // Ensure 'dashboard' is the correct view name
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while getting skill recommendations. Please try again later.");
             return "redirect:/dashboard";
         }
     }
+
+
 
     @PostMapping("/personality-guidance")
     public String personalityGuidance(@RequestParam String personalityType, Model model, RedirectAttributes redirectAttributes) {
@@ -111,11 +115,11 @@ public class CareerCoachController {
     }
 
     private User getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            String username = auth.getName();
-            return userService.findByUsername(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+            return (User) authentication.getPrincipal(); // Assuming User is the principal object
         }
         return null;
     }
+
 }
