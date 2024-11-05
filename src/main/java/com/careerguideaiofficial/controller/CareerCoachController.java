@@ -95,11 +95,13 @@ public class CareerCoachController {
     public String personalityGuidance(@RequestParam String personalityType, Model model, RedirectAttributes redirectAttributes) {
         User user = getAuthenticatedUser();
         if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "You must be logged in to get personality guidance.");
             return "redirect:/login";
         }
 
         try {
             String guidance = careerCoachService.getPersonalityTypeGuidance(user, personalityType);
+            model.addAttribute("user", user);
             model.addAttribute("guidance", guidance);
             return "dashboard";
         } catch (Exception e) {

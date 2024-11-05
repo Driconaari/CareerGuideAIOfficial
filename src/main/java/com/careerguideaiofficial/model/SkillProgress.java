@@ -24,4 +24,9 @@ public class SkillProgress {
     private String skillName;
     private Integer proficiencyLevel;
     private LocalDateTime updatedAt;
+
+    // Convenience method to get userId
+    public Long getUserId() {
+        return user != null ? user.getId() : null;
+    }
 }
