@@ -50,6 +50,7 @@ public class CareerCoachController {
         try {
             String feedback = careerCoachService.getResumeReview(user, resume);
             model.addAttribute("feedback", feedback);
+            model.addAttribute("user", user); // Ensure user is added to the model
             return "dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while reviewing your resume. Please try again later.");
@@ -67,6 +68,7 @@ public class CareerCoachController {
         try {
             String response = careerCoachService.getInterviewResponse(user, question);
             model.addAttribute("response", response);
+            model.addAttribute("user", user); // Ensure user is added to the model
             return "dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred during interview practice. Please try again later.");
@@ -84,6 +86,7 @@ public class CareerCoachController {
         try {
             String recommendations = careerCoachService.getSkillRecommendations(user, careerGoals);
             model.addAttribute("recommendations", recommendations);
+            model.addAttribute("user", user); // Ensure user is added to the model
             return "dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while getting skill recommendations. Please try again later.");
@@ -101,6 +104,7 @@ public class CareerCoachController {
         try {
             String guidance = careerCoachService.getPersonalityTypeGuidance(user, personalityType);
             model.addAttribute("guidance", guidance);
+            model.addAttribute("user", user); // Ensure user is added to the model
             return "dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while getting personality guidance. Please try again later.");

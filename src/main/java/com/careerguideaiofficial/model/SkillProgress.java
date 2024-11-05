@@ -20,8 +20,9 @@ public class SkillProgress {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    @Column(length = 2000)
     private String skillName;
+    @Column(length = 2000)
     private Integer proficiencyLevel;
     private LocalDateTime updatedAt;
 }
