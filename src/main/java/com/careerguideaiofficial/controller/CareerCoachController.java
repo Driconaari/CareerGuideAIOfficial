@@ -115,11 +115,11 @@ public class CareerCoachController {
     }
 
     private User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
-            return (User) authentication.getPrincipal(); // Assuming User is the principal object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String username = auth.getName();
+            return userService.findByUsername(username);
         }
         return null;
     }
-
 }
