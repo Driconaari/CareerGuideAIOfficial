@@ -12,27 +12,27 @@ import java.util.Optional;
 @Repository
 public interface SkillProgressRepository extends JpaRepository<SkillProgress, Long> {
 
-    List<SkillProgress> findByUserId(Long userId);
+    List<SkillProgress> findByUser_Id(Long userId);
 
-    Optional<SkillProgress> findByUserIdAndSkillName(Long userId, String skillName);
+    Optional<SkillProgress> findByUser_IdAndSkillName(Long userId, String skillName);
 
-    void deleteByUserId(Long userId);
+    void deleteByUser_Id(Long userId);
 
-    boolean existsByUserIdAndSkillName(Long userId, String skillName);
+    boolean existsByUser_IdAndSkillName(Long userId, String skillName);
 
-    List<SkillProgress> findByUserIdOrderByProficiencyLevelDesc(Long userId);
+    List<SkillProgress> findByUser_IdOrderByProficiencyLevelDesc(Long userId);
 
-    List<SkillProgress> findByUserIdAndProficiencyLevelGreaterThanEqual(Long userId, Integer proficiencyLevel);
+    List<SkillProgress> findByUser_IdAndProficiencyLevelGreaterThanEqual(Long userId, Integer proficiencyLevel);
 
-    @Query("SELECT sp FROM SkillProgress sp WHERE sp.user.id = :userId ORDER BY sp.proficiencyLevel DESC LIMIT :limit")
-    List<SkillProgress> findTopNByUserIdOrderByProficiencyLevelDesc(Long userId, int limit);
+    @Query("SELECT sp FROM SkillProgress sp WHERE sp.user.id = :userId ORDER BY sp.proficiencyLevel DESC")
+    List<SkillProgress> findTopNByUser_IdOrderByProficiencyLevelDesc(Long userId);
 
     @Modifying
     @Query("UPDATE SkillProgress sp SET sp.proficiencyLevel = :newProficiencyLevel WHERE sp.user.id = :userId AND sp.skillName = :skillName")
     int updateProficiencyLevel(Long userId, String skillName, Integer newProficiencyLevel);
 
     @Query("SELECT AVG(sp.proficiencyLevel) FROM SkillProgress sp WHERE sp.user.id = :userId")
-    Double findAverageProficiencyLevelByUserId(Long userId);
+    Double findAverageProficiencyLevelByUser_Id(Long userId);
 
     @Query("SELECT DISTINCT sp.skillName FROM SkillProgress sp")
     List<String> findAllUniqueSkillNames();
