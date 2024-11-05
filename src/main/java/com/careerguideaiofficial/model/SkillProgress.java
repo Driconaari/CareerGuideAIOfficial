@@ -29,4 +29,6 @@ public class SkillProgress {
     public Long getUserId() {
         return user != null ? user.getId() : null;
     }
+
+
 }

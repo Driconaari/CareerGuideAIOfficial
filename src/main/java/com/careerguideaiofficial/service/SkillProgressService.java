@@ -3,10 +3,12 @@ package com.careerguideaiofficial.service;
 import com.careerguideaiofficial.model.SkillProgress;
 import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.repository.SkillProgressRepository;
+import com.careerguideaiofficial.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +16,12 @@ import java.util.Optional;
 public class SkillProgressService {
 
     private final SkillProgressRepository skillProgressRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public SkillProgressService(SkillProgressRepository skillProgressRepository) {
+    public SkillProgressService(SkillProgressRepository skillProgressRepository, UserRepository userRepository) {
         this.skillProgressRepository = skillProgressRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -27,12 +31,14 @@ public class SkillProgressService {
         if (existingSkillProgress.isPresent()) {
             SkillProgress skillProgress = existingSkillProgress.get();
             skillProgress.setProficiencyLevel(proficiencyLevel);
+            skillProgress.setUpdatedAt(LocalDateTime.now());
             return skillProgressRepository.save(skillProgress);
         } else {
             SkillProgress newSkillProgress = new SkillProgress();
-            newSkillProgress.setUserId(user.getId());
+            newSkillProgress.setUser(user);
             newSkillProgress.setSkillName(skillName);
             newSkillProgress.setProficiencyLevel(proficiencyLevel);
+            newSkillProgress.setUpdatedAt(LocalDateTime.now());
             return skillProgressRepository.save(newSkillProgress);
         }
     }
