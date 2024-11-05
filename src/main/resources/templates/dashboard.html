@@ -24,9 +24,9 @@
 <main>
     <section id="resume-review">
         <h2>Resume Review</h2>
-        <form th:action="@{/review-resume}" method="post">
+        <form th:action="@{/review-resume}" method="post" class="ajax-form">
             <textarea name="resume" rows="10" cols="50" placeholder="Paste your resume here..."></textarea>
-            <button type="submit">Get  Feedback</button>
+            <button type="submit">Get Feedback</button>
         </form>
         <div th:if="${feedback}" class="feedback" th:text="${feedback}"></div>
         <div th:if="${resumes}">
@@ -42,7 +42,7 @@
 
     <section id="interview-practice">
         <h2>Interview Practice</h2>
-        <form th:action="@{/interview-practice}" method="post">
+        <form th:action="@{/interview-practice}" method="post" class="ajax-form">
             <input type="text" name="question" placeholder="Enter an interview question">
             <button type="submit">Get Response</button>
         </form>
@@ -61,7 +61,7 @@
 
     <section id="skill-recommendation">
         <h2>Skill Recommendations</h2>
-        <form th:action="@{/skill-recommendations}" method="post">
+        <form th:action="@{/skill-recommendations}" method="post" class="ajax-form">
             <textarea name="careerGoals" rows="5" cols="50" placeholder="Describe your career goals..."></textarea>
             <button type="submit">Get Recommendations</button>
         </form>
@@ -71,7 +71,7 @@
 
     <section id="personality-guidance">
         <h2>Personality Type Guidance</h2>
-        <form th:action="@{/personality-guidance}" method="post">
+        <form th:action="@{/personality-guidance}" method="post" class="ajax-form">
             <input type="text" name="personalityType" placeholder="Enter your personality type (e.g., INTJ)">
             <button type="submit">Get Guidance</button>
         </form>
@@ -87,5 +87,39 @@
 <footer>
     <p>&copy; 2023 AI Career Coach. All rights reserved.</p>
 </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle AJAX form submissions
+        document.querySelectorAll('.ajax-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+                const formData = new FormData(this);
+
+                // Send the form data using fetch
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        // Parse the new HTML and update the section
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+
+                        // Find the updated content in the response
+                        const newSection = doc.querySelector(`section#${this.closest('section').id}`);
+                        const currentSection = document.querySelector(`section#${this.closest('section').id}`);
+
+                        // Update the current section with new content
+                        if (newSection && currentSection) {
+                            currentSection.innerHTML = newSection.innerHTML; // Update current section with new content
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
 </body>
 </html>
