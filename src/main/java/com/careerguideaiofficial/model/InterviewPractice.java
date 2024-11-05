@@ -1,6 +1,5 @@
 package com.careerguideaiofficial.model;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "interview_practices")
 public class InterviewPractice {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +26,8 @@ public class InterviewPractice {
     private String answer;
     private String feedback;
     private LocalDateTime createdAt;
+
+    public void setResponse(String response) {
+        this.answer = response;  // Store response in the 'answer' field
+    }
 }

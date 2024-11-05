@@ -36,4 +36,5 @@ public interface SkillProgressRepository extends JpaRepository<SkillProgress, Lo
 
     @Query("SELECT DISTINCT sp.skillName FROM SkillProgress sp")
     List<String> findAllUniqueSkillNames();
+
 }
