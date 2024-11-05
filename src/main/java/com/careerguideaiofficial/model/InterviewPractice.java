@@ -23,6 +23,7 @@ public class InterviewPractice {
     private User user;
 
     private String question;
+    @Column(length = 2000)
     private String answer;
     private String feedback;
     private LocalDateTime createdAt;

@@ -1,5 +1,5 @@
 package com.careerguideaiofficial.service;
-
+/*
 import com.careerguideaiofficial.model.SkillProgress;
 import com.careerguideaiofficial.model.User;
 import com.careerguideaiofficial.repository.SkillProgressRepository;
@@ -76,3 +76,5 @@ public class SkillProgressService {
         skillProgressRepository.deleteByUser_Id(user.getId());
     }
 }
+
+ */
