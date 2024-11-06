@@ -1,7 +1,10 @@
 package com.careerguideaiofficial.repository;
 
 import com.careerguideaiofficial.model.SkillProgress;
+import com.careerguideaiofficial.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,53 +13,28 @@ import java.util.Optional;
 @Repository
 public interface SkillProgressRepository extends JpaRepository<SkillProgress, Long> {
 
-    /**
-     * Find all SkillProgress entries for a given user ID.
-     *
-     * @param userId the ID of the user
-     * @return a list of SkillProgress entries
-     */
+    List<SkillProgress> findByUser(User user);
+
     List<SkillProgress> findByUserId(Long userId);
 
-    /**
-     * Find a SkillProgress entry for a given user ID and skill name.
-     *
-     * @param userId the ID of the user
-     * @param skillName the name of the skill
-     * @return an Optional containing the SkillProgress if found, or empty if not found
-     */
+    Optional<SkillProgress> findByUserAndSkillName(User user, String skillName);
+
     Optional<SkillProgress> findByUserIdAndSkillName(Long userId, String skillName);
 
-    /**
-     * Delete all SkillProgress entries for a given user ID.
-     *
-     * @param userId the ID of the user
-     */
-    void deleteByUserId(Long userId);
+    List<SkillProgress> findByUserOrderByProficiencyLevelDesc(User user);
 
-    /**
-     * Check if a SkillProgress entry exists for a given user ID and skill name.
-     *
-     * @param userId the ID of the user
-     * @param skillName the name of the skill
-     * @return true if the entry exists, false otherwise
-     */
-    boolean existsByUserIdAndSkillName(Long userId, String skillName);
-
-    /**
-     * Find all SkillProgress entries for a given user ID, ordered by proficiency level in descending order.
-     *
-     * @param userId the ID of the user
-     * @return a list of SkillProgress entries ordered by proficiency level
-     */
     List<SkillProgress> findByUserIdOrderByProficiencyLevelDesc(Long userId);
 
-    /**
-     * Find all SkillProgress entries for a given user ID with a proficiency level greater than or equal to the given level.
-     *
-     * @param userId the ID of the user
-     * @param proficiencyLevel the minimum proficiency level
-     * @return a list of SkillProgress entries meeting the criteria
-     */
-    List<SkillProgress> findByUserIdAndProficiencyLevelGreaterThanEqual(Long userId, Integer proficiencyLevel);
+    @Query("SELECT sp FROM SkillProgress sp WHERE sp.user.id = :userId AND sp.proficiencyLevel >= :minLevel")
+    List<SkillProgress> findSkillsAboveLevel(@Param("userId") Long userId, @Param("minLevel") Integer minLevel);
+
+    @Query("SELECT AVG(sp.proficiencyLevel) FROM SkillProgress sp WHERE sp.user.id = :userId")
+    Double getAverageProficiencyLevel(@Param("userId") Long userId);
+
+    @Query("SELECT sp.skillName FROM SkillProgress sp WHERE sp.user.id = :userId ORDER BY sp.proficiencyLevel DESC")
+    List<String> findTopSkillsByUser(@Param("userId") Long userId);
+
+    void deleteByUser(User user);
+
+    void deleteByUserId(Long userId);
 }

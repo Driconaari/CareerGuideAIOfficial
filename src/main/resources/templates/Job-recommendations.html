@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Job Recommendations</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+  <h1>Career Guide AI</h1>
+  <nav>
+    <ul>
+      <li><a th:href="@{/dashboard}">Dashboard</a></li>
+      <li><a th:href="@{/user-profile}">User Profile</a></li>
+      <li><a th:href="@{/job-recommendations}">Job Recommendations</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2>Job Recommendations for <span th:text="${user.username}">User</span></h2>
+
+  <section id="request-recommendations">
+    <h3>Get Your Job Recommendations</h3>
+    <form th:action="@{/job-recommendations}" method="post">
+      <button type="submit">Generate Job Recommendations</button>
+    </form>
+  </section>
+
+  <section id="job-recommendations" th:if="${jobRecommendations != null}">
+    <h3>Based on your skills, we recommend the following job positions:</h3>
+    <ul>
+      <li th:each="job : ${jobRecommendations}" th:text="${job}">Job Title</li>
+    </ul>
+  </section>
+
+  <section id="no-recommendations" th:if="${jobRecommendations == null}">
+    <p>Click the button above to generate job recommendations based on your skills.</p>
+  </section>
+
+  <section id="skill-improvement">
+    <h3>Want to improve your chances?</h3>
+    <p>Consider enhancing your skills or learning new ones to qualify for more job opportunities.</p>
+    <a th:href="@{/dashboard}" class="button">Update Your Skills</a>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Career Guide AI. All rights reserved.</p>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
